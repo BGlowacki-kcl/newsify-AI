@@ -44,7 +44,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchHotWords()
-  }, [])
+  }, [fetchHotWords])
 
 
   const sendMessage = async () => {
