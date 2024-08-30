@@ -8,15 +8,44 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons'
 
 export default function Home() {
+  const [hotWords, setHotWords] = useState('')
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "Hi! I'm your latest news manager. Type what you want to know and I'll try my best to find articles just for you!",
+      content: `Hi! I'm your latest news manager. Type what you want to know and I'll try my best to find articles just for you!`,
     },
   ])
   const [message, setMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const fetchHotWords = async () => {
+    try {
+      const response = await fetch('/api/titles')
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      const data = await response.json()
+      setHotWords(data)
+      console.log(messages)
+
+      // Update the first message with the fetched hot words
+      setMessages((messages) => [
+        {
+          ...messages[0],
+          content: `Hi! I'm your latest news manager. Type what you want to know and I'll try my best to find articles just for you! Hot topics right now: ${data.join(', ')}`,
+        },
+        ...messages.slice(1), // keep the rest of the messages
+      ])
+    } catch (error) {
+      console.error('Failed to fetch hot words:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchHotWords()
+  }, [])
+
 
   const sendMessage = async () => {
     if (!message.trim() || isLoading) return;  // Don't send empty messages
