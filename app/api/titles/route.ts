@@ -1,8 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextRequest } from 'next/server'
 import fs from 'fs'
 import path from 'path'
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextRequest) {
   try {
     const FILE_PATH_TITLES = path.join(process.cwd(), 'titles.txt')
     const titlesWords = fs.readFileSync(FILE_PATH_TITLES, 'utf-8')
