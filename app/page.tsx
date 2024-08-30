@@ -13,7 +13,7 @@ export default function Home() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: `Hi! I'm your latest news manager. Type what you want to know and I'll try my best to find articles just for you!`,
+      content: `Hi! I am your latest news manager. Type what you want to know and I will try my best to find articles just for you!`,
     },
   ])
   const [message, setMessage] = useState('')
@@ -61,7 +61,7 @@ const fetchHotWords = useCallback(async () => {
     setMessages((messages) => [
       {
         ...messages[0],
-        content: `Hi! I'm your latest news manager. Type what you want to know and I'll try my best to find articles just for you! Hot topics right now: ${data.join(', ')}`,
+        content: `Hi! I am your latest news manager. Type what you want to know and I will try my best to find articles just for you! Hot topics right now: ${data.join(', ')}`,
       },
       ...messages.slice(1), // keep the rest of the messages
     ]);
