@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { EventRegistry, QueryArticles, RequestArticlesInfo } from 'eventregistry';
@@ -47,16 +47,11 @@ async function fetchAndStoreNewsArticles() {
     }
 }
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === 'POST') {
-        const result = await fetchAndStoreNewsArticles();
-        if (result.error) {
-            res.status(500).json(result);
-        } else {
-            res.status(200).json(result);
-        }
+export async function POST(req: NextRequest) {
+    const result = await fetchAndStoreNewsArticles();
+    if (result.error) {
+        return NextResponse.json(result, { status: 500 });
     } else {
-        res.setHeader('Allow', ['POST']);
-        res.status(405).end(`Method ${req.method} Not Allowed`);
-    }
+        return NextResponse.json(result, { status: 200 });
+    }    
 }
