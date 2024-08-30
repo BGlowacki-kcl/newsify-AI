@@ -30,12 +30,15 @@ async function fetchAndStoreNewsArticles() {
         const results = response.articles.results as Array<any>;
 
     results.forEach((article: any) => {
-        allArticles += `
-            Title: ${article.title}; date: ${article.date}; URL: ${article.url}; type: ${article.dataType}; Description: ${article.body};
-        `;
-        allTitles += `
-            ${article.title}
-        `;
+        if (!allArticles.includes(article.title)){
+            const cleanBody = article.body.replace(/\s+/g, ' ').trim();
+            allArticles += `
+                Title: ${article.title}; date: ${article.date}; URL: ${article.url}; type: ${article.dataType}; Description: ${cleanBody};
+            `;
+            allTitles += `
+                ${article.title}
+            `;
+        }
     });
         fs.writeFileSync(FILE_PATH, allArticles, { encoding: 'utf-8' });
         fs.writeFileSync(FILE_PATH_TITLES, allTitles, { encoding: 'utf-8' });
