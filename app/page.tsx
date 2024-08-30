@@ -171,7 +171,7 @@ export default function Home() {
           className='text-center text-2xl'
           color="#EBD3F8"
         >
-          The only news source you'll ever need! Ask me whatever you want. With fresh articles and long-term knowledge, you will not find a question that can make me confused!
+          The only news source you will ever need! Ask me whatever you want. With fresh articles and long-term knowledge, you will not find a question that can make me confused!
         </Typography>
         
       </Stack>
