@@ -158,7 +158,7 @@ useEffect(() => {
       <Stack
         zIndex={1}
         position="relative"
-        className='font-serif top-5 rounded-lg border border-black w-3/5 space-y-8'
+        className='font-serif top-5 rounded-lg border border-black w-3/5 space-y-4'
       >
         <Typography
           className='text-center font-bold'
@@ -173,9 +173,11 @@ useEffect(() => {
         <Typography
           className='text-center'
           color="#EBD3F8"
+          fontSize={{lg: '1.5rem', sm: '1.0rem'}}
+          lineHeight={{lg: '2rem', sm: '1rem'}}
           sx={{
-            fontSize: '1.5rem',
-            lineHeight: '2rem',
+            // fontSize: '1.5rem',
+            // lineHeight: '2rem',
           }}
         >
           The only news source you will ever need! Ask me whatever you want. With fresh articles and long-term knowledge, you will not find a question that can make me confused!
@@ -192,8 +194,8 @@ useEffect(() => {
         position= 'relative'
         zIndex= {1}
         direction={'column'}
-        width="65vw"
-        height="57vh"
+        width={{lg: "65vw", sm: "80vw"}}
+        height={{lg: "57vh", sm: "80vw"}}
         border="2px solid grey"
         className='bg-slate-600/90 shadow-md rounded-xl'
         p={2}
