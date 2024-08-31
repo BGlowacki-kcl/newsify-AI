@@ -21,8 +21,6 @@ export async function GET(req: NextRequest) {
       .slice(0, 4)
       .map(entry => entry[0])
 
-    console.log(topWords);
-
     return new Response(JSON.stringify(topWords), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },

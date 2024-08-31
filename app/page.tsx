@@ -20,34 +20,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // const fetchHotWords = async () => {
-  //   try {
-  //     const response = await fetch('/api/titles')
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok')
-  //     }
-  //     const data = await response.json()
-  //     setHotWords(data)
-  //     console.log(messages)
-
-  //     // Update the first message with the fetched hot words
-  //     setMessages((messages) => [
-  //       {
-  //         ...messages[0],
-  //         content: `Hi! I'm your latest news manager. Type what you want to know and I'll try my best to find articles just for you! Hot topics right now: ${data.join(', ')}`,
-  //       },
-  //       ...messages.slice(1), // keep the rest of the messages
-  //     ])
-  //   } catch (error) {
-  //     console.error('Failed to fetch hot words:', error)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   fetchHotWords();
-  // }, [fetchHotWords]);
-
-
 const fetchHotWords = useCallback(async () => {
   try {
     const response = await fetch('/api/titles');
@@ -189,14 +161,22 @@ useEffect(() => {
         className='font-serif top-5 rounded-lg border border-black w-3/5 space-y-8'
       >
         <Typography
-          className='text-center text-3xl font-bold'
+          className='text-center font-bold'
           color="#EBD3F8"
+          sx={{
+            fontSize: '1.875rem',
+            lineHeight: '2.25rem',
+          }}
         >
           Newsify AI
         </Typography>
         <Typography
-          className='text-center text-2xl'
+          className='text-center'
           color="#EBD3F8"
+          sx={{
+            fontSize: '1.5rem',
+            lineHeight: '2rem',
+          }}
         >
           The only news source you will ever need! Ask me whatever you want. With fresh articles and long-term knowledge, you will not find a question that can make me confused!
         </Typography>

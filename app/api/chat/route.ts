@@ -51,19 +51,16 @@ function getRandomArticle(articles: any[], titles: any[]): any {
 function getAugmentedPrompt(data: any): string {
   const userMessage = data[data.length-1]?.content || "";
     const userMessageWords = userMessage.toLowerCase().split(/\s+/).filter((word: string) => word && !['I', 'want', 'to', 'show', 'tell', 'me', 'how', 'many', 'much', 'hi', 'hello', 'why', 'when'].includes(word));
-    console.log(userMessage)
-    console.log("Titles length: " + titles.length);
+
     const titleScores = titles.map(title => ({
       title,
       score: getMatchingScore(title, userMessageWords),
     }));
     const bestMatches = titleScores.filter(titleScore => titleScore.score > 0).sort((a, b) => b.score - a.score).slice(0, 4);
-    console.log(bestMatches.map(bestMatch => bestMatch.title))
+
     const selectedArticles = articles.filter(article => 
       bestMatches.some(bestMatch => article.includes(bestMatch.title))
     );
-    console.log('Articles: ' + selectedArticles.length)
-    
 
     while (selectedArticles.length < 4) {
       const randomArticle = getRandomArticle(articles, titles);
@@ -71,8 +68,6 @@ function getAugmentedPrompt(data: any): string {
           selectedArticles.push(randomArticle);
       }
     }
-    console.log(selectedArticles)
-    console.log(selectedArticles.length)
     return `
       ${augmentedPrompt}
       ${selectedArticles}
@@ -80,7 +75,6 @@ function getAugmentedPrompt(data: any): string {
 }
 
 export async function POST(req: Request) {
-  console.log("In POST")
     const openai = new OpenAI({
         baseURL: "https://openrouter.ai/api/v1",
         apiKey: process.env.OPENROUTER_API_KEY,
