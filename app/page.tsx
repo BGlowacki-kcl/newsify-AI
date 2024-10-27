@@ -101,6 +101,9 @@ useEffect(() => {
   }
 
   const [status, setStatus] = useState<string | null>(null);
+  useEffect(() => {
+    console.log(status);
+  }, [status])
 
   const handleFetchNews = async () => {
       setStatus('Fetching news articles...');
@@ -182,6 +185,7 @@ useEffect(() => {
         >
           The only news source you will ever need! Ask me whatever you want. With fresh articles and long-term knowledge, you will not find a question that can make me confused!
         </Typography>
+        <Button onClick={handleFetchNews}>Fetch news</Button>
         
       </Stack>
       

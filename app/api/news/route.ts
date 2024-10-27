@@ -1,60 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-import { EventRegistry, QueryArticles, RequestArticlesInfo } from 'eventregistry';
 
-const FILE_PATH = path.join(process.cwd(), 'news_articles.txt');
-const FILE_PATH_TITLES = path.join(process.cwd(), 'titles.txt');
 
+var axios = require("axios").default;
 require('dotenv').config({ path: '.env.local' });
 
-const NEWS_API_KEY = process.env.NEWS_API_KEY;
+const NC_API_KEY = process.env.NC_API;
 
-async function fetchAndStoreNewsArticles() {
-    const er = new EventRegistry({ apiKey: NEWS_API_KEY, allowUseOfArchive: false });
-
-    const requestArticlesInfo = new RequestArticlesInfo({ count: 100, sortBy: "date", sortByAsc: false });
-    const q1 = new QueryArticles({
-        sourceLocationUri: [
-            "http://en.wikipedia.org/wiki/United_Kingdom",
-        ],
-        ignoreSourceGroupUri: "paywall/paywalled_sources",
-    });
-    q1.setRequestedResult(requestArticlesInfo);
-
-    try {
-        const response = await er.execQuery(q1);
-        let allArticles = '';
-        let allTitles = '';
-
-        const results = response.articles.results as Array<any>;
-
-    results.forEach((article: any) => {
-        if (!allArticles.includes(article.title)){
-            const cleanBody = article.body.replace(/\s+/g, ' ').trim();
-            allArticles += `
-                Title: ${article.title}; date: ${article.date}; URL: ${article.url}; type: ${article.dataType}; Description: ${cleanBody};
-            `;
-            allTitles += `
-                ${article.title}
-            `;
+export async function POST(req: NextRequest){
+    try{
+      var options = {
+        method: 'GET',
+        url: 'https://api.newscatcherapi.com/v2/search',
+        params: {q: 'Bitcoin', lang: 'en', sort_by: 'relevancy', page: '1'},
+        headers: {
+          'x-api-key': NC_API_KEY,
         }
-    });
-        fs.writeFileSync(FILE_PATH, allArticles, { encoding: 'utf-8' });
-        fs.writeFileSync(FILE_PATH_TITLES, allTitles, { encoding: 'utf-8' });
+      };
 
-        return { message: 'News articles have been successfully fetched and stored.' };
-    } catch (error) {
+        const response = await axios.request(options);
+
+        const data = await response.data;
+
+        console.log(data);
+
+        return new NextResponse(JSON.stringify({ message: 'Fetched successfully!', data }), {
+            status: 200,
+        });
+    } catch(error){
         console.error('Error fetching news articles:', error);
-        return { error: 'Failed to fetch news articles.' };
-    }
-}
 
-export async function POST(req: NextRequest) {
-    const result = await fetchAndStoreNewsArticles();
-    if (result.error) {
-        return NextResponse.json(result, { status: 500 });
-    } else {
-        return NextResponse.json(result, { status: 200 });
-    }    
+        return new NextResponse(JSON.stringify({ error: 'Failed to fetch news articles' }), {
+            status: 500,
+        });
+    }
 }
